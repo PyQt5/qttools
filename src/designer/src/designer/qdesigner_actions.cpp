@@ -968,23 +968,23 @@ QAction *QDesignerActions::minimizeAction() const
 
 void QDesignerActions::showDesignerHelp()
 {
-    QString url = AssistantClient::designerManualUrl();
-    url += "qtdesigner-manual.html"_L1;
-    showHelp(url);
+    // QString url = AssistantClient::designerManualUrl();
+    // url += "qtdesigner-manual.html"_L1;
+    // showHelp(url);
 }
 
 void QDesignerActions::helpRequested(const QString &manual, const QString &document)
 {
-    QString url = AssistantClient::documentUrl(manual);
-    url += document;
-    showHelp(url);
+    // QString url = AssistantClient::documentUrl(manual);
+    // url += document;
+    // showHelp(url);
 }
 
 void QDesignerActions::showHelp(const QString &url)
 {
-    QString errorMessage;
-    if (!m_assistantClient.showPage(url, &errorMessage))
-        QMessageBox::warning(core()->topLevel(), tr("Assistant"), errorMessage);
+    // QString errorMessage;
+    // if (!m_assistantClient.showPage(url, &errorMessage))
+    //     QMessageBox::warning(core()->topLevel(), tr("Assistant"), errorMessage);
 }
 
 void QDesignerActions::aboutDesigner()
@@ -1013,10 +1013,10 @@ void QDesignerActions::showWidgetSpecificHelp()
         return;
     }
 
-    QString errorMessage;
-    const bool rc = m_assistantClient.activateIdentifier(helpId, &errorMessage);
-    if (!rc)
-        QMessageBox::warning(core()->topLevel(), tr("Assistant"), errorMessage);
+    // QString errorMessage;
+    // const bool rc = m_assistantClient.activateIdentifier(helpId, &errorMessage);
+    // if (!rc)
+    //     QMessageBox::warning(core()->topLevel(), tr("Assistant"), errorMessage);
 }
 
 void QDesignerActions::updateCloseAction()

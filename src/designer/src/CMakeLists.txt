@@ -8,11 +8,11 @@ qt_exclude_tool_directories_from_default_target(
     plugins
 )
 
-if(QT_FEATURE_process)
+# if(QT_FEATURE_process)
     add_subdirectory(lib)
     add_subdirectory(components)
     add_subdirectory(designer)
-endif()
+# endif()
 if(QT_BUILD_SHARED_LIBS AND QT_FEATURE_process)
     add_subdirectory(plugins)
 endif()

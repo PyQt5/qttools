@@ -1,62 +1,80 @@
 # Copyright (C) 2022 The Qt Company Ltd.
 # SPDX-License-Identifier: BSD-3-Clause
 
+cmake_minimum_required(VERSION 3.5)
 
-#####################################################################
-## designer App:
-#####################################################################
-
-qt_internal_add_app(designer
-    SOURCES
-        ../../../shared/fontpanel/fontpanel.cpp ../../../shared/fontpanel/fontpanel_p.h
-        ../../../shared/qttoolbardialog/qttoolbardialog.cpp ../../../shared/qttoolbardialog/qttoolbardialog_p.h ../../../shared/qttoolbardialog/qttoolbardialog.ui
-        appfontdialog.cpp appfontdialog.h
-        assistantclient.cpp assistantclient.h
-        designer_enums.h
-        main.cpp
-        mainwindow.cpp mainwindow.h
-        newform.cpp newform.h
-        preferencesdialog.cpp preferencesdialog.h preferencesdialog.ui
-        qdesigner.cpp qdesigner.h
-        qdesigner_actions.cpp qdesigner_actions.h
-        qdesigner_appearanceoptions.cpp qdesigner_appearanceoptions.h qdesigner_appearanceoptions.ui
-        qdesigner_formwindow.cpp qdesigner_formwindow.h
-        qdesigner_server.cpp qdesigner_server.h
-        qdesigner_settings.cpp qdesigner_settings.h
-        qdesigner_toolwindow.cpp qdesigner_toolwindow.h
-        qdesigner_workbench.cpp qdesigner_workbench.h
-        saveformastemplate.cpp saveformastemplate.h saveformastemplate.ui
-        versiondialog.cpp versiondialog.h
-    INCLUDE_DIRECTORIES
-        ../../../shared/fontpanel
-        ../../../shared/qttoolbardialog
-        ../lib/extension
-        ../lib/sdk
-        ../lib/shared
-        extra
-    LIBRARIES
-        Qt::CorePrivate
-        Qt::DesignerComponentsPrivate
-        Qt::DesignerPrivate
-        Qt::Gui
-        Qt::Network
-        Qt::Widgets
-        Qt::Xml
-    ENABLE_AUTOGEN_TOOLS
-        uic
-    PRECOMPILED_HEADER
-        "qdesigner_pch.h"
+project(designer
+    VERSION "${QT_REPO_MODULE_VERSION}"
+    DESCRIPTION "Qt Desinger"
+    HOMEPAGE_URL "https://qt.io/"
+    LANGUAGES CXX C
 )
 
+set(CMAKE_AUTOUIC ON)
+set(CMAKE_AUTOMOC ON)
+set(CMAKE_AUTORCC ON)
+
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+set(PROJECT_SOURCES
+    ../../../shared/fontpanel/fontpanel.cpp ../../../shared/fontpanel/fontpanel_p.h
+    ../../../shared/qttoolbardialog/qttoolbardialog.cpp ../../../shared/qttoolbardialog/qttoolbardialog_p.h ../../../shared/qttoolbardialog/qttoolbardialog.ui
+    appfontdialog.cpp appfontdialog.h
+    # assistantclient.cpp assistantclient.h
+    designer_enums.h
+    main.cpp
+    mainwindow.cpp mainwindow.h
+    newform.cpp newform.h
+    preferencesdialog.cpp preferencesdialog.h preferencesdialog.ui
+    qdesigner.cpp qdesigner.h
+    qdesigner_actions.cpp qdesigner_actions.h
+    qdesigner_appearanceoptions.cpp qdesigner_appearanceoptions.h qdesigner_appearanceoptions.ui
+    qdesigner_formwindow.cpp qdesigner_formwindow.h
+    qdesigner_server.cpp qdesigner_server.h
+    qdesigner_settings.cpp qdesigner_settings.h
+    qdesigner_toolwindow.cpp qdesigner_toolwindow.h
+    qdesigner_workbench.cpp qdesigner_workbench.h
+    saveformastemplate.cpp saveformastemplate.h saveformastemplate.ui
+    versiondialog.cpp versiondialog.h
+)
+
+include_directories(
+    ../../../shared/fontpanel
+    ../../../shared/qttoolbardialog
+    ../lib/extension
+    ../lib/sdk
+    ../lib/shared
+    extra
+)
+
+qt_add_executable(${PROJECT_NAME}
+    MANUAL_FINALIZATION
+    ${PROJECT_SOURCES}
+)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE
+    Qt::CorePrivate
+    Qt::DesignerComponentsPrivate
+    Qt::DesignerPrivate
+    Qt::Gui
+    Qt::Network
+    Qt::Widgets
+    Qt::Xml
+    "-lembind"
+)
+
+
+
 # Due to QTBUG-110369, don't add designer as dependency to External Project examples.
-qt_internal_skip_dependency_for_examples(designer)
+qt_internal_skip_dependency_for_examples(${PROJECT_NAME})
 
 # Resources:
 set(designer_resource_files
     "images/designer.png"
 )
 
-qt_internal_add_resource(designer "designer"
+qt_internal_add_resource(${PROJECT_NAME} "designer"
     PREFIX
         "/qt-project.org/designer"
     FILES
@@ -71,7 +89,7 @@ set(qttoolbardialog_resource_files
     "../../../shared/qttoolbardialog/images/up.png"
 )
 
-qt_internal_add_resource(designer "qttoolbardialog"
+qt_internal_add_resource(${PROJECT_NAME} "qttoolbardialog"
     PREFIX
         "/qt-project.org/qttoolbardialog"
     BASE
@@ -80,43 +98,43 @@ qt_internal_add_resource(designer "qttoolbardialog"
         ${qttoolbardialog_resource_files}
 )
 
-set_target_properties(designer PROPERTIES
+set_target_properties(${PROJECT_NAME} PROPERTIES
     QT_TARGET_DESCRIPTION "Qt Widgets Designer"
 )
 
 ## Scopes:
 #####################################################################
 
-qt_internal_extend_target(designer CONDITION TARGET Qt::PrintSupport
+qt_internal_extend_target(${PROJECT_NAME} CONDITION TARGET Qt::PrintSupport
     PUBLIC_LIBRARIES
         Qt::PrintSupport
 )
 
-qt_internal_extend_target(designer CONDITION NOT QT_BUILD_SHARED_LIBS
+qt_internal_extend_target(${PROJECT_NAME} CONDITION NOT QT_BUILD_SHARED_LIBS
     DEFINES
         QT_DESIGNER_STATIC
 )
 
 if(WIN32)
-    set_target_properties(designer PROPERTIES
+    set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_TARGET_RC_ICONS "${CMAKE_CURRENT_SOURCE_DIR}/designer.ico"
     )
 endif()
 
 if(WIN32)
-    set_target_properties(designer PROPERTIES
+    set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_TARGET_VERSION "${PROJECT_VERSION}.0"
     )
 endif()
 
 if(UNIX)
-    set_target_properties(designer PROPERTIES
+    set_target_properties(${PROJECT_NAME} PROPERTIES
         QT_TARGET_VERSION "${PROJECT_VERSION}"
     )
 endif()
 
 if(APPLE)
-    set_target_properties(designer PROPERTIES
+    set_target_properties(${PROJECT_NAME} PROPERTIES
         MACOSX_BUNDLE_INFO_PLIST "${CMAKE_CURRENT_SOURCE_DIR}/Info_mac.plist"
         MACOSX_BUNDLE TRUE
         MACOSX_BUNDLE_ICON_FILE "designer.icns"
@@ -125,7 +143,7 @@ if(APPLE)
     set_source_files_properties(designer.icns PROPERTIES
         MACOSX_PACKAGE_LOCATION Resources
     )
-    target_sources(designer PRIVATE
+    target_sources(${PROJECT_NAME} PRIVATE
         designer.icns
     )
     # special case end
@@ -142,10 +160,11 @@ endif()
 # FILETYPES.path = "Contents/Resources"
 # QMAKE_BUNDLE_DATA = "FILETYPES"
 
-qt_internal_extend_target(designer CONDITION UNIX AND NOT HAIKU AND NOT MACOS
+target_link_options(${PROJECT_NAME} PUBLIC -sASYNCIFY -Os)
+
+qt_internal_extend_target(${PROJECT_NAME} CONDITION UNIX AND NOT HAIKU AND NOT MACOS
     PUBLIC_LIBRARIES
         m
 )
-qt_internal_add_docs(designer
-    doc/qtdesigner.qdocconf
-)
+
+qt_finalize_executable(${PROJECT_NAME})

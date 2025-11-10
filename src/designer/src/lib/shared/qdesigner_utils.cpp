@@ -700,6 +700,9 @@ namespace qdesigner_internal {
     QDESIGNER_SHARED_EXPORT bool runUIC(const QString &fileName, UicLanguage language,
                                         QByteArray& ba, QString &errorMessage)
     {
+#ifdef Q_OS_WASM
+        return false;
+#else
         QProcess uic;
         QStringList arguments;
         static constexpr auto uicBinary =
@@ -741,6 +744,7 @@ namespace qdesigner_internal {
         }
         ba = uic.readAllStandardOutput();
         return true;
+#endif
     }
 
     QDESIGNER_SHARED_EXPORT QString qtify(const QString &name)

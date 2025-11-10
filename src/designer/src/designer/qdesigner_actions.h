@@ -4,7 +4,7 @@
 #ifndef QDESIGNER_ACTIONS_H
 #define QDESIGNER_ACTIONS_H
 
-#include "assistantclient.h"
+// #include "assistantclient.h"
 #include "qdesigner_settings.h"
 
 #include <QtCore/qobject.h>
@@ -131,7 +131,7 @@ private:
     QDesignerWorkbench *m_workbench;
     QDesignerFormEditorInterface *m_core;
     QDesignerSettings m_settings;
-    AssistantClient m_assistantClient;
+    // AssistantClient m_assistantClient;
     QString m_openDirectory;
     QString m_saveDirectory;
 
